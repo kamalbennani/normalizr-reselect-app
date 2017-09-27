@@ -1,5 +1,6 @@
 import { Map, List, fromJS, Record } from 'immutable';
 import axios from 'axios';
+import { fetchPostsList } from '../../Post/redux/reducer';
 
 const FETCH_USERS_REQUEST_STARTED = 'users/FETCH_USERS_REQUEST_STARTED';
 const FETCH_USERS_REQUEST_ENDED = 'users/FETCH_USERS_REQUEST_ENDED';
@@ -16,6 +17,7 @@ export const fetchUsersList = () => dispatch => {
   .then((response) => {
     // Getting the response    
     if (response.data) {
+      dispatch(fetchPostsList(response.data.results));
       return dispatch({
         type: FETCH_USERS_REQUEST_ENDED,
         payload: {
@@ -24,12 +26,12 @@ export const fetchUsersList = () => dispatch => {
       })
     }
 
-    return dispatch(fetchUserFailed());
+    return dispatch(fetchUsersFailed());
   })
-  .catch(() => dispatch(fetchUserFailed()));
+  .catch(() => dispatch(fetchUsersFailed()));
 }
 
-const fetchUserFailed = () => {
+const fetchUsersFailed = () => {
   return {
     type: FETCH_USERS_REQUEST_FAILED,
     payload: {
@@ -87,4 +89,3 @@ export const usersReducer = (state = initialState, action) => {
     default: return state;
   }
 }
-

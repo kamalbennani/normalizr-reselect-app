@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 import { List, Image, Icon } from 'semantic-ui-react';
 
 class UserItem extends PureComponent {
