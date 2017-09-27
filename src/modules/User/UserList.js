@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fetchUsersList, toggleActiveStatus } from './redux/reducer';
 import { Grid, List } from 'semantic-ui-react';
+
+import { fetchUsersList, toggleActiveStatus } from './redux/reducer';
 import UserItem from './UserItem';
+import UserMetrics from './UserMetrics';
 
 class UserList extends Component {
-  componentDidMount() {
-    this.props.fetchUsers();
-  }
 
   handleItemClick = (userId) => {
     this.props.toggleUserActive(userId);
@@ -17,6 +16,9 @@ class UserList extends Component {
     const { usersIds } = this.props;
     return (
       <Grid centered padded columns={2}>
+        <Grid.Row>
+          <UserMetrics />
+        </Grid.Row>
         <Grid.Column>
           <List selection>
             {usersIds.map(userId => <UserItem key={userId} userId={userId} handleItemClick={() => this.handleItemClick(userId)}/>)}

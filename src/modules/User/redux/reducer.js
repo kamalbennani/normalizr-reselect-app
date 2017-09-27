@@ -20,7 +20,7 @@ export const fetchUsersList = () => dispatch => {
   dispatch({
     type: FETCH_USERS_REQUEST_STARTED,
   });
-  return axios.get('https://randomuser.me/api?results=100&inc=name,email,picture')
+  return axios.get('https://randomuser.me/api?results=100&inc=name,email,picture,nat,gender')
   .then((response) => {
     // Getting the response    
     if (response.data) {
@@ -61,6 +61,8 @@ const UserRecord = Record({
   name: null,
   email: null,
   picture: null,
+  gender: null,
+  nat: null,
   isActive: true,
 })
 

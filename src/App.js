@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Container, Button } from 'semantic-ui-react';
 import Perf from 'react-addons-perf';
+
+import UserList from './modules/User/UserList';
+import Counter from './modules/Counter/Counter';
+import { fetchUsersList } from './modules/User/redux/reducer';
 import logo from './logo.svg';
 import './App.css';
-import UserList from './modules/User/UserList';
 
 class App extends Component {
   state = {
     started: false,
+  }
+
+  componentDidMount() {
+    this.props.fetchUsers();
   }
 
   onTogglePerf = () => {
@@ -42,6 +50,9 @@ class App extends Component {
             />
           </div>
           <div>
+            <Counter />
+          </div>
+          <div>
             <UserList />
           </div>
         </Container>
@@ -50,4 +61,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    fetchUsers: () => dispatch(fetchUsersList()),
+  }
+}
+
+export default connect(null, mapDispatchToProps)(App);
