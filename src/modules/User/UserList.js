@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fetchUsersList, toggleActiveStatus } from './redux/enhancedReducer';
+import { fetchUsersList, toggleActiveStatus } from './redux/reducer';
 import { Grid, List } from 'semantic-ui-react';
 import UserItem from './UserItem';
 
@@ -14,12 +14,12 @@ class UserList extends Component {
   }
 
   render() {
-    const { usersIds } = this.props;
+    const { users } = this.props;
     return (
       <Grid centered padded columns={2}>
         <Grid.Column>
           <List selection>
-            {usersIds.map(userId => <UserItem userId={userId} handleItemClick={() => this.handleItemClick(userId)}/>)}
+            {users.map(user => <UserItem user={user} handleItemClick={() => this.handleItemClick(user.get('email'))}/>)}
           </List>
         </Grid.Column>
       </Grid>
@@ -29,7 +29,7 @@ class UserList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    usersIds: state.users.get('ids'),
+    users: state.users.get('entities'),
   }
 }
 
