@@ -20,4 +20,10 @@ class UserItem extends PureComponent {
   }
 }
 
-export default UserItem;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.users.getIn(['entities', ownProps.userId]),
+  }
+}
+
+export default connect(mapStateToProps)(UserItem);

@@ -1,12 +1,20 @@
 import { Map, List, fromJS, Record } from 'immutable';
 import axios from 'axios';
+import { normalize, schema } from 'normalizr';
 
+// Schemas
+const userSchema = new schema.Entity('users', {}, {
+  idAttribute: 'email',
+});
+
+// Action Types
 const FETCH_USERS_REQUEST_STARTED = 'users/FETCH_USERS_REQUEST_STARTED';
 const FETCH_USERS_REQUEST_ENDED = 'users/FETCH_USERS_REQUEST_ENDED';
 const FETCH_USERS_REQUEST_FAILED = 'users/FETCH_USERS_REQUEST_FAILED';
 
 const TOGGLE_USER_STATUS = 'user/TOGGLE_USER_STATUS';
 
+// Action Creators
 export const fetchUsersList = () => dispatch => {
   // Starting the fetching request
   dispatch({
@@ -16,10 +24,12 @@ export const fetchUsersList = () => dispatch => {
   .then((response) => {
     // Getting the response    
     if (response.data) {
+      const normalizedData = normalize(response.data.results, [userSchema]);
       return dispatch({
         type: FETCH_USERS_REQUEST_ENDED,
         payload: {
-          data: response.data.results,
+          users: normalizedData.entities.users,
+          ids: normalizedData.result,
         }
       })
     }
@@ -55,7 +65,8 @@ const UserRecord = Record({
 })
 
 const initialState = Map({
-  entities: List(),
+  entities: Map(),
+  ids: List(),
   _metadata: Map({
     fetching: false,
     error: null,
@@ -73,7 +84,8 @@ export const usersReducer = (state = initialState, action) => {
     case FETCH_USERS_REQUEST_ENDED:
       return state
         .setIn(['_metadata', 'fetching'], false)
-        .set('entities', fromJS(action.payload.data).map((user) => new UserRecord(user)));
+        .set('entities', fromJS(action.payload.users).map((user) => new UserRecord(user)))
+        .set('ids', fromJS(action.payload.ids));
     case TOGGLE_USER_STATUS:
       return state
         .update('entities', users => {
