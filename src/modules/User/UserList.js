@@ -19,7 +19,7 @@ class UserList extends Component {
       <Grid centered padded columns={2}>
         <Grid.Column>
           <List selection>
-            {users.map(user => <UserItem user={user} handleItemClick={() => this.handleItemClick(user.get('email'))}/>)}
+            {users.map(user => <UserItem key={user.get('email')} user={user} handleItemClick={() => this.handleItemClick(user.get('email'))}/>)}
           </List>
         </Grid.Column>
       </Grid>
