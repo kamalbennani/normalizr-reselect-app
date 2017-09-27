@@ -15,12 +15,12 @@ class UserList extends Component {
   }
 
   render() {
-    const { users } = this.props;
+    const { usersIds } = this.props;
     return (
       <Grid centered padded columns={2}>
         <Grid.Column>
           <List selection>
-            {users.map(user => <UserItem key={user.email} user={fromJS(user)} handleItemClick={() => this.handleItemClick(user.email)}/>)}
+            {usersIds.map(userId => <UserItem key={userId} userId={userId} handleItemClick={() => this.handleItemClick(userId)}/>)}
           </List>
         </Grid.Column>
       </Grid>
@@ -30,7 +30,7 @@ class UserList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    users: state.users.get('entities').toJS(),
+    usersIds: state.users.get('ids'),
   }
 }
 

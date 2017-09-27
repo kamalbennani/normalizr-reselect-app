@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
 import { List, Image, Icon } from 'semantic-ui-react';
 
 class UserItem extends PureComponent {
@@ -19,4 +20,10 @@ class UserItem extends PureComponent {
   }
 }
 
-export default UserItem;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.users.getIn(['entities', ownProps.userId]),
+  }
+}
+
+export default connect(mapStateToProps)(UserItem);
