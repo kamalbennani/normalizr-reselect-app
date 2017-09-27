@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Container, Button } from 'semantic-ui-react';
 import Perf from 'react-addons-perf';
+
+import UserList from './modules/User/UserList';
+import Counter from './modules/Counter/Counter';
 import logo from './logo.svg';
 import './App.css';
-import UserList from './modules/User/UserList';
 
 class App extends Component {
   state = {
@@ -16,7 +18,12 @@ class App extends Component {
       Perf.start();
     } else {
       Perf.stop();
+      console.group('Overall time taken');
       Perf.printInclusive(Perf.getLastMeasurements());
+      console.groupEnd('Overall time taken');
+      console.group('Wasted Time');
+      Perf.printWasted(Perf.getLastMeasurements());
+      console.groupEnd('Wasted Time');
     }
 
     this.setState({
@@ -40,6 +47,9 @@ class App extends Component {
               labelPosition='right'
               onClick={this.onTogglePerf}
             />
+          </div>
+          <div className="text-center">
+            <Counter />
           </div>
           <div>
             <UserList />

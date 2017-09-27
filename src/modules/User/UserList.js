@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
+import { fromJS } from 'immutable';
 import { fetchUsersList, toggleActiveStatus } from './redux/reducer';
 import { Grid, List } from 'semantic-ui-react';
 import UserItem from './UserItem';
@@ -19,7 +20,7 @@ class UserList extends Component {
       <Grid centered padded columns={2}>
         <Grid.Column>
           <List selection>
-            {users.map(user => <UserItem key={user.get('email')} user={user} handleItemClick={() => this.handleItemClick(user.get('email'))}/>)}
+            {users.map(user => <UserItem key={user.email} user={fromJS(user)} handleItemClick={() => this.handleItemClick(user.email)}/>)}
           </List>
         </Grid.Column>
       </Grid>
@@ -29,7 +30,7 @@ class UserList extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    users: state.users.get('entities'),
+    users: state.users.get('entities').toJS(),
   }
 }
 
