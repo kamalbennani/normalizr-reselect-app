@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import { fromJS } from 'immutable';
 import { fetchUsersList, toggleActiveStatus } from './redux/reducer';
 import { Grid, List } from 'semantic-ui-react';
 import UserItem from './UserItem';

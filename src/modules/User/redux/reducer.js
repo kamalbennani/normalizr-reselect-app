@@ -1,12 +1,8 @@
 import { Map, List, fromJS, Record } from 'immutable';
 import axios from 'axios';
-import { normalize, schema } from 'normalizr';
+import { normalize } from 'normalizr';
 import { fetchPostsList } from '../../Post/redux/reducer';
-
-// Schemas
-const userSchema = new schema.Entity('users', {}, {
-  idAttribute: 'email',
-});
+import { userSchema } from './schema';
 
 // Action Types
 const FETCH_USERS_REQUEST_STARTED = 'users/FETCH_USERS_REQUEST_STARTED';
@@ -26,6 +22,42 @@ export const fetchUsersList = () => dispatch => {
     // Getting the response    
     if (response.data) {
       dispatch(fetchPostsList(response.data.results));
+      /**
+       * Normalize function will turn this:
+       * [
+       * {
+       *   name: {
+       *    first: 'john',
+       *    last: 'doe',
+       *   },
+       *   email: 'xyz@example.com'
+       * },
+       * {
+       *   name: {
+       *    first: 'toto',
+       *    last: 'toto',
+       *   },
+       *   email: 'abc@example.com'
+       *  }
+       * ]
+       * into this:
+       * {
+       *  'xyz@example.com': {
+       *    name: {
+       *      first: 'john',
+       *      last: 'doe',
+       *    },
+       *    email: 'xyz@example.com'
+       *  },
+       *  'abc@example.com': {
+       *    name: {
+       *      first: 'toto',
+       *      last: 'toto',
+       *    },
+       *    email: 'abc@example.com'
+       *  }
+       * }
+       */
       const normalizedData = normalize(response.data.results, [userSchema]);
       return dispatch({
         type: FETCH_USERS_REQUEST_ENDED,

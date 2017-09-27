@@ -3,6 +3,7 @@ import { Container, Button } from 'semantic-ui-react';
 import Perf from 'react-addons-perf';
 
 import UserList from './modules/User/UserList';
+import PostList from './modules/Post/PostList';
 import Counter from './modules/Counter/Counter';
 import logo from './logo.svg';
 import './App.css';
@@ -48,11 +49,11 @@ class App extends Component {
               onClick={this.onTogglePerf}
             />
           </div>
-          <div className="text-center">
-            <Counter />
-          </div>
           <div>
             <UserList />
+          </div>
+          <div>
+            <PostList />
           </div>
         </Container>
       </div>
