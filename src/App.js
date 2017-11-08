@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Container, Button } from 'semantic-ui-react';
+import { Grid, Container, Button } from 'semantic-ui-react';
 import Perf from 'react-addons-perf';
 
 import UserList from './modules/User/UserList';
+import SelectedUserList from './modules/User/SelectedUserList';
+import UserMetrics from './modules/User/UserMetrics';
 import Counter from './modules/Counter/Counter';
 import { fetchUsersList } from './modules/User/redux/reducer';
 import logo from './logo.svg';
@@ -38,7 +40,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to Normalizr &amp; reselect</h2>
+          <h2>Welcome to Reselect</h2>
         </div>
         <Container className="App-intro">
           <div className="PerformanceActions text-center">
@@ -53,7 +55,15 @@ class App extends Component {
             <Counter />
           </div>
           <div>
-            <UserList />
+            <Grid centered padded columns={2}>
+              <Grid.Row>
+                <UserMetrics />
+              </Grid.Row>
+              <Grid.Row>
+                <SelectedUserList />
+                <UserList />
+              </Grid.Row>
+            </Grid>
           </div>
         </Container>
       </div>

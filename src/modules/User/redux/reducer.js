@@ -69,6 +69,7 @@ const UserRecord = Record({
 const initialState = Map({
   entities: Map(),
   ids: List(),
+  activeUserIds: List(),
   _metadata: Map({
     fetching: false,
     error: null,
@@ -88,7 +89,7 @@ export const usersReducer = (state = initialState, action) => {
         .setIn(['_metadata', 'fetching'], false)
         .set('entities', fromJS(action.payload.users).map((user) => new UserRecord(user)))
         .set('ids', fromJS(action.payload.ids));
-    case TOGGLE_USER_STATUS:
+    /*case TOGGLE_USER_STATUS:
       return state
         .update('entities', users => {
           return users.map((user) => {
@@ -97,7 +98,14 @@ export const usersReducer = (state = initialState, action) => {
             }
             return user;
           })
+        })*/
+    case TOGGLE_USER_STATUS:
+      return state
+        .updateIn(['activeUserIds'], list => {
+          const userIndex = list.indexOf(action.payload.userId);
+          return userIndex >= 0 ? list.delete(userIndex) : list.push(action.payload.userId);
         })
+      
     default: return state;
   }
 }

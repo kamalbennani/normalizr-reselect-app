@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { List, Image, Icon } from 'semantic-ui-react';
 
-class UserItem extends PureComponent {
+class UserItem extends Component {
   render() {
-    const { user, handleItemClick } = this.props;
+    const { user, handleItemClick, isActive } = this.props;
+    console.log('isActive', isActive);
     return (
       <List.Item key={user.get('email')} onClick={handleItemClick}>
         <Image avatar src={user.getIn(['picture', 'thumbnail'])} />
@@ -13,7 +14,7 @@ class UserItem extends PureComponent {
           <List.Description>{user.get('email')}</List.Description>
         </List.Content>
         <List.Content floated='right'>
-          {user.get('isActive') ? <Icon name="checkmark" /> : <Icon name="remove" />}
+          {isActive ? <Icon name="checkmark" /> : <Icon name="remove" />}
         </List.Content>
       </List.Item>
     )
@@ -23,6 +24,7 @@ class UserItem extends PureComponent {
 const mapStateToProps = (state, ownProps) => {
   return {
     user: state.users.getIn(['entities', ownProps.userId]),
+    isActive: state.users.get('activeUserIds').includes(ownProps.userId),
   }
 }
 
